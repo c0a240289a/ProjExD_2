@@ -48,7 +48,19 @@ def gameover(screen: pg.Surface) -> None:
     pg.display.update()
     time.sleep(5)
 
+
+    def init__bb_imgs() -> tuple[list[pg.Surface], list[int]]:
+        bb_accs = [a for a in range(1,11)]
+
+        for r in range(1,11):
+            bb_img = pg.Surface((20*r,20*r))
+            pg.draw.circle(bb_img,(255,0,0),(10*r,10*r),10*r)
+
     
+    avx = vx*bb_accs[min(tmr//500,9)]
+    bb_img = bb_imgs[min(tmr//500,9)]
+
+
 def main():
     pg.display.set_caption("逃げろ！こうかとん")
     screen = pg.display.set_mode((WIDTH, HEIGHT))
@@ -56,6 +68,7 @@ def main():
     kk_img = pg.transform.rotozoom(pg.image.load("fig/3.png"), 0, 0.9)
     kk_rct = kk_img.get_rect()
     kk_rct.center = 300, 200
+    bb_imgs, bb_accs = init_bb_imgs()  # 演習2途中
     bb_img = pg.Surface((20,20))  # 空のSurfaceを作る（爆弾用）
     pg.draw.circle(bb_img,(255,0,0),(10,10),10)
     bb_img.set_colorkey((0,0,0))
@@ -65,7 +78,7 @@ def main():
     vx,vy = +5,+5  # 爆弾の移動速度
     clock = pg.time.Clock()
     tmr = 0
-    
+
     while True:
         for event in pg.event.get():
             if event.type == pg.QUIT: 
